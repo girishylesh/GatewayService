@@ -1,0 +1,28 @@
+server:
+  port: 8091
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+      - id: auctionCmdService
+        uri: lb://AUCTION-CMD-SERVICE
+        predicates:
+        - Path=/e-auction/api/v1/cmd/** 
+      - id: auctionQueryService
+        uri: lb://AUCTION-QUERY-SERVICE
+        predicates:
+        - Path=/e-auction/api/v1/query/**
+        filters:
+        - name: CircuitBreaker
+          args:
+            name: gatewayCircuitBreaker
+            fallbackUri: forward:/fallback/message
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true
+    
