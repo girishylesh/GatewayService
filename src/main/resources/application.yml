@@ -6,15 +6,32 @@ spring:
   cloud:
     gateway:
       routes:
+      - id: authService
+        uri: lb://AUTH-SERVICE
+        predicates:
+        - Path=/auth/**
+        filters:
+        - JwtAuthenticationFilter
+        - name: CircuitBreaker
+          args:
+            name: gatewayCircuitBreaker
+            fallbackUri: forward:/fallback/message        
       - id: auctionCmdService
         uri: lb://AUCTION-CMD-SERVICE
         predicates:
-        - Path=/e-auction/api/v1/cmd/** 
+        - Path=/e-auction/api/v1/cmd/**
+        filters:
+        - JwtAuthenticationFilter
+        - name: CircuitBreaker
+          args:
+            name: gatewayCircuitBreaker
+            fallbackUri: forward:/fallback/message
       - id: auctionQueryService
         uri: lb://AUCTION-QUERY-SERVICE
         predicates:
         - Path=/e-auction/api/v1/query/**
         filters:
+        - JwtAuthenticationFilter
         - name: CircuitBreaker
           args:
             name: gatewayCircuitBreaker
@@ -25,4 +42,10 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
     preferIpAddress: true
+jwt:
+  secret: c9998dbc291932efc08976fbfa62e55567176134c70f34a200b0b6883f19f30c
+  token:
+    validity: 18000000
+noauth:
+  endpoints: /login, /register
     
