@@ -9,7 +9,7 @@ spring:
       - id: authService
         uri: lb://AUTH-SERVICE
         predicates:
-        - Path=/auth/**
+        - Path=/e-auction/api/v1/auth/**
         filters:
         - JwtAuthenticationFilter
         - name: CircuitBreaker
@@ -36,6 +36,12 @@ spring:
           args:
             name: gatewayCircuitBreaker
             fallbackUri: forward:/fallback/message
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
 eureka:
   client:
     serviceUrl:
@@ -46,6 +52,8 @@ jwt:
   secret: c9998dbc291932efc08976fbfa62e55567176134c70f34a200b0b6883f19f30c
   token:
     validity: 18000000
-noauth:
-  endpoints: /login, /register
+ 
+api:
+  endpoints: 
+    noauth: /login, /register
     

@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<Object
 	@Autowired
 	private JwtUtil jwtUtil;
 	
-	@Value("${noauth.endpoints}")
+	@Value("${api.endpoints.noauth}")
 	private String[] noAuthEndpoints;
 
 	@Override
