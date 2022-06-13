@@ -9,38 +9,33 @@ spring:
       - id: authService
         uri: lb://AUTH-SERVICE
         predicates:
-        - Path=/e-auction/api/v1/auth/**
-        filters:
-        - name: CircuitBreaker
-          args:
-            name: gatewayCircuitBreaker
-            fallbackUri: forward:/fallback/message        
+        - Path=/e-auction/api/v1/auth/**      
       - id: auctionCmdService
         uri: lb://AUCTION-CMD-SERVICE
         predicates:
         - Path=/e-auction/api/v1/cmd/**
         filters:
         - JwtAuthenticationFilter
-        - name: CircuitBreaker
-          args:
-            name: gatewayCircuitBreaker
-            fallbackUri: forward:/fallback/message
+#        - name: CircuitBreaker
+#          args:
+#            name: gatewayCircuitBreaker
+#            fallbackUri: forward:/fallback/message
       - id: auctionQueryService
         uri: lb://AUCTION-QUERY-SERVICE
         predicates:
         - Path=/e-auction/api/v1/query/**
         filters:
         - JwtAuthenticationFilter
-        - name: CircuitBreaker
-          args:
-            name: gatewayCircuitBreaker
-            fallbackUri: forward:/fallback/message
+#        - name: CircuitBreaker
+#          args:
+#            name: gatewayCircuitBreaker
+#            fallbackUri: forward:/fallback/message
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "*"
-            allowedHeaders: "*"
-            allowedMethods: "*"
+            allowedOrigins: '*'
+            allowedHeaders: '*'
+            allowedMethods: '*'
 eureka:
   client:
     serviceUrl:
@@ -55,4 +50,7 @@ jwt:
 api:
   endpoints: 
     noauth: /login, /register
+logging:
+  level:
+    root: info
     
